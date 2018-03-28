@@ -37,12 +37,7 @@ include 'config/database.php';
     echo "<p class='create-task'><a href='create.php' class='btn btn-primary m-b-1em'>Create New Task</a></p>";
     if($num>0){
         echo "<div class='container'>";
-        // echo "<p1 class='create-task'>All Tasks</p1>";
-        echo "<div class='input-group'>";
-            echo "<span class='input-group-addon'>Filter</span>";
-            echo "<input id='filter' type='text' class='form-control' placeholder='Type here...'>";
-        echo "</div>";
-        echo "<table id='table' class='table table-hover table-responsive table-bordered' data-toggle='table' data-search='true' data-filter-control='true' data-click-to-select='true' data-toolbar='#toolbar'>";
+        echo "<table id='table' class='table table-hover table-responsive table-bordered' data-toggle='table'  data-filter-control='true' data-click-to-select='true' data-toolbar='#toolbar'>";
         echo "<thead class='head-table'>";
             echo "<tr>";
                 echo "<th>ID</th>";
