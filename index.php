@@ -63,10 +63,12 @@ include 'config/database.php';
                     <img class='img-responsive' src='<?php echo $image ?>' alt='image'>
                 </td>
                 <td>
-                    <a <?php echo "href='page-task.php?id={$id}'"; ?> class='btn btn-info m-r-1em'>Read</a>
                     <?php if(isset($_SESSION['admin']) && $_SESSION['admin']=="admin"):?>
+                        <a href='page-task.php?id=<?php echo $id ?>'  class='btn btn-info m-r-1em'>Read</a>
                         <a href='update.php?id=<?php echo $id ?>' class='btn btn-primary m-r-1em'>Edit</a>
                         <a href='#' onclick='delete_user(<?php echo $id ?>)' class='btn btn-danger'>Delete</a>
+                    <?php else: ?>
+                        <a href='page-task.php?id=<?php echo $id ?>'  class='btn btn-info m-r-1em'>Read</a> 
                     <?php endif ?>
                 </td>
                 <?php if($done !=0): ?>
