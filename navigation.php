@@ -10,22 +10,19 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             </button>
- 
-            <!-- Change "Your Site" to your site name -->
             <a class="navbar-brand" href="index.php">PHP CRUD</a>
         </div>
  
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <!-- link to the "Cart" page, highlight if current page is cart.php -->
-                <li <?php echo $page_title=="Tasks List" ? "class='active'" : ""; ?>>
+                <li <?php echo $page_title=="Task List" ? "class='active'" : ""; ?>>
                     <a href="index.php">Home</a>
                 </li>
             </ul>
  
             <?php
             // check if users / customer was logged in
-            // if user was logged in, show "Edit Profile", "Orders" and "Logout" options
+            // if user was logged in, show "Logout" options
             if(isset($_SESSION['logged_in']) && $_SESSION['logged_in']==true){
                 ?>
                 <ul class="nav navbar-nav navbar-right">
@@ -43,7 +40,7 @@
                 <?php
                 }
                 
-                elseif($page_title=="Task" || $page_title=="Update"){
+                elseif($page_title=="Task" || $page_title=="Update"|| $page_title=="Create task"){
                     ?>
                     <ul class="nav navbar-nav navbar-right">
                         <li <?php echo $page_title=="Edit Profile" ? "class='active'" : ""; ?>>

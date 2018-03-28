@@ -124,3 +124,6 @@ img[data-showimg='false']{
 .head-table{
     background-color: #6495ed;
 }
+.hidden{
+    display: none;
+}

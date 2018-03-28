@@ -6,25 +6,24 @@
  
 <!-- Bootstrap JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.12/js/jquery.dataTables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.12/js/dataTables.bootstrap.min.js"></script>
 <script src="js/deleteTask.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.js"></script>
 <script>
-    $(document).ready(function () {
-    (function ($) {
-
-            $('#filter').keyup(function () {
-
-                var rex = new RegExp($(this).val(), 'i');
-                $('.searchable tr').hide();
-                $('.searchable tr').filter(function () {
-                    return rex.test($(this).text());
-                }).show();
-
-            })
-
-        }(jQuery));
-
+    $(document).ready(function() {
+        $('#table').DataTable({
+            "ordering": true,
+            "searching": false,
+            "info":     false,
+            "dom": '<"toolbar">frtip',
+            "columnDefs": [ {
+                "searchable": false,
+                "orderable": false,
+                "targets": [3,4,5]
+            } ],
+            "lengthMenu": [3]
     });
+});
 
 </script>
 <!-- end HTML page -->

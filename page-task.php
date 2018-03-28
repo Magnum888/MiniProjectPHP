@@ -1,6 +1,7 @@
 <?php
 $page_title="Task";
 $require_login=true;
+include_once "config/core.php"; 
 include_once "login_checker.php"; 
 include_once "header.php";
 include 'config/database.php';
