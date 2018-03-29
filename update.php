@@ -1,9 +1,13 @@
 <?php
-$page_title="Update"; 
+$page_title="Update";
 include_once "header.php";
 include 'config/database.php';
 ?>
-     
+
+<?php if(!isset($_SESSION['admin']) && $_SESSION['admin']==admin): ?>
+<div class='alert alert-danger'>This page to you close</div>
+<?php else: ?>
+
 <?php
     $id=isset($_GET['id']) ? $_GET['id'] : die('ERROR: Record ID not found.');
     
@@ -90,3 +94,5 @@ include 'config/database.php';
     </form>
          
     <?php include_once "footer.php"; ?>
+    
+<?php endif ?> 

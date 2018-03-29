@@ -20,7 +20,7 @@
                 </li>
             </ul>
  
-            <?php
+            <?php 
             // check if users / customer was logged in
             // if user was logged in, show "Logout" options
             if(isset($_SESSION['logged_in']) && $_SESSION['logged_in']==true){
@@ -39,6 +39,23 @@
                 </ul>
                 <?php
                 }
+                elseif($page_title=="Update"){
+                    ?>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li <?php echo $page_title=="Update" ? "class='active'" : ""; ?>>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                                &nbsp;&nbsp;<?php echo $_SESSION['name']; ?>
+                                &nbsp;&nbsp;<span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="logout.php" class="glyphicon glyphicon-log-out"> Logout</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                <?php
+                }
+                
                 // if user was not logged in, show the "login" and "register" options
                 elseif(!isset($_SESSION['logged_in'])){
                     ?>
