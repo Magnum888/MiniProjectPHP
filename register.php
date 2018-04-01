@@ -11,7 +11,6 @@ include_once "login_checker.php";
 // include classes
 include_once 'config/db.php';
 include_once 'objects/user.php';
-include_once "libs/php/utils.php";
  
 // include page header HTML
 include_once "header.php";
@@ -27,15 +26,14 @@ if($_POST){
  
     // initialize objects
     $user = new User($db);
-    $utils = new Utils();
  
-    // set user email to detect if it already exists
-    $user->email=$_POST['email'];
+    // set user email and name to detect if it already exists
+    $user->name=$_POST['name'];
  
     // check if email already exists
-    if($user->emailExists()){
+    if($user->nameExists()){
         echo "<div class='alert alert-danger'>";
-            echo "The email you specified is already registered. Please try again or <a href='login.php'>login.</a>";
+            echo "The name you specified is already registered. Please try again or <a href='login.php'>login.</a>";
         echo "</div>";
     }
  
@@ -45,7 +43,7 @@ if($_POST){
         $user->email=$_POST['email'];
         $user->password=$_POST['password'];
         $user->admin='customer';
-        $user->task_id=55;
+        $user->task_id=rand(1, 99999);
         
         // create the user
         if($user->create()){

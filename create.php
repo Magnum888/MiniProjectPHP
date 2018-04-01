@@ -1,4 +1,6 @@
-<?php 
+<?php
+$page_title="Create task";
+include_once "config/core.php"; 
 include_once "header.php";
 include 'config/database.php';
 ?>
@@ -14,10 +16,10 @@ if($_POST){
         $description=htmlspecialchars(strip_tags($_POST['description']));
         $user_id=rand(1000, 99999);
         $done=0;
-        if($_FILES['image']['size'] > (2 * 1024 * 1024)) {echo "<div class='alert alert-success'>The file size should not exceed 2Mb.</div>";}
+        if($_FILES['image']['size'] > (2 * 1024 * 1024)) {echo "<div class='alert alert-danger'>The file size should not exceed 2Mb.</div>";}
         $imageinfo = getimagesize($_FILES['image']['tmp_name']);
         $arr = array('image/jpeg','image/gif','image/png');
-        if(!in_array($imageinfo['mime'],$arr)){echo ('The picture must be a format JPG, GIF or PNG');} 
+        if(!in_array($imageinfo['mime'],$arr)){echo ("<div class='alert alert-danger'>The picture must be a format JPG, GIF or PNG.</div>");} 
         else {
             $upload_dir = './images/';
             $image = $upload_dir.date('YmdHis').basename($_FILES['image']['name']);
@@ -50,17 +52,28 @@ if($_POST){
 
     <form id="task" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" enctype="multipart/form-data" method="post">
         <table class='table table-hover table-responsive table-bordered'>
+            <?php if(isset($_SESSION['logged_in']) && $_SESSION['logged_in']==true): ?>
+            <tr class="hidden">
+                <td>Name</td>
+                <td><input type='text' name='name' class='form-control' value="<?php echo htmlspecialchars($_SESSION['name']) ?>" required /></td>
+            </tr>
+            <tr class="hidden">
+                <td>Email</td>
+                <td><input type='email' name='email' class='form-control' value="<?php echo htmlspecialchars($_SESSION['email']) ?>" required  /></td>
+            </tr>
+            <?php else: ?>
             <tr>
                 <td>Name</td>
-                <td><input type='text' name='name' class='form-control' /></td>
+                <td><input type='text' name='name' class='form-control' required /></td>
             </tr>
             <tr>
                 <td>Email</td>
-                <td><input type='email' name='email' class='form-control' /></td>
+                <td><input type='email' name='email' class='form-control' required  /></td>
             </tr>
+            <?php endif ?>
             <tr>
                 <td>Description</td>
-                <td><textarea name='description' class='form-control'></textarea></td>
+                <td><textarea name='description' class='form-control' required ></textarea></td>
             </tr>
             <tr>
                 <td>Image</td>

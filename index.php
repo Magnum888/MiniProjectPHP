@@ -1,6 +1,5 @@
 <?php
-// set page title
-$page_title="Tasks List";
+$page_title="Task List";
 $require_login=true;
 include_once "login_checker.php";
 include_once "config/core.php";
@@ -8,85 +7,82 @@ include_once "header.php";
 include 'config/database.php';
 ?>
      
-<?php
-    $action = isset($_GET['action']) ? $_GET['action'] : "";
-    // if it was redirected from delete.php
-    if($action=='deleted'){
-        echo "<div class='alert alert-success'>Record was deleted.</div>";
-    }
-    // if login was successful
-    if($action=='login_success'){
-        echo "<div class='alert alert-info'>";
-            echo "<strong>&#9745; User: " . $_SESSION['name'] . ". You can to create a task</strong>";
-        echo "</div>";
-    }
-    // if user is already logged in, shown when user tries to access the login page
-    else if($action=='already_logged_in'){
-        echo "<div class='alert alert-info'>";
-            echo "<strong>You are already logged in.</strong>";
-        echo "</div>";
-    }
-    $query = "SELECT id, name, email, description, image, user_id, done FROM tasks ORDER BY id DESC LIMIT :from_record_num, :records_per_page";
+
+    <?php $action = isset($_GET['action']) ? $_GET['action'] : "";?>
+    <!-- if it was redirected from delete.php -->
+    <?php if($action=='deleted'): ?>
+        <div class='alert alert-success'>Record was deleted.</div>
+    <?php endif ?>
+    <!-- if login was successful -->
+    <?php if($action=='login_success'): ?>
+        <div class='alert alert-info'>
+            <strong>&#9745; User: <?php echo $_SESSION['name'] ?>. You can to create a task</strong>
+        </div>
+     <!-- if user is already logged in, shown when user tries to access the login page -->
+    <?php elseif($action=='already_logged_in'): ?>
+        <div class='alert alert-info'>
+            <strong>You are already logged in.</strong>
+        </div>
+    <?php endif ?>
+    <?php 
+    $query = "SELECT id, name, email, description, image, user_id, done FROM tasks ORDER BY id DESC";
     $stmt = $con->prepare($query);
-    $stmt->bindParam(":from_record_num", $from_record_num, PDO::PARAM_INT);
-    $stmt->bindParam(":records_per_page", $records_per_page, PDO::PARAM_INT);
     $stmt->execute();
     $num = $stmt->rowCount();
-
-    // link to create record form
-    echo "<p class='create-task'><a href='create.php' class='btn btn-primary m-b-1em'>Create New Task</a></p>";
-    if($num>0){
-        echo "<div class='container'>";
-        echo "<table id='table' class='table table-hover table-responsive table-bordered' data-toggle='table'  data-filter-control='true' data-click-to-select='true' data-toolbar='#toolbar'>";
-        echo "<thead class='head-table'>";
-            echo "<tr>";
-                echo "<th>ID</th>";
-                echo "<th data-sortable='true'>Name</th>";
-                echo "<th data-sortable='true'>Email</th>";
-                echo "<th>Description</th>";
-                echo "<th>Image</th>";
-                echo "<th>Action</th>";
-                echo "<th data-sortable='true'>Done</th>";
-            echo "</tr>";
-        echo "</thead>";
-        echo "<tbody class='searchable'>";
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-            extract($row);
-            echo "<tr>";
-                echo "<td>{$id}</td>";
-                echo "<td>{$name}</td>";
-                echo "<td>{$email}</td>";
-                echo "<td>{$description}</td>";
-                echo "<td><img class='img-responsive' src='{$image}' alt='image'></td>";
-                echo "<td>";
-                    echo "<a href='page-task.php?id={$id}' class='btn btn-info m-r-1em'>Read</a>";
-                    if(isset($_SESSION['admin']) && $_SESSION['admin']=="admin"){
-                        echo "<a href='update.php?id={$id}' class='btn btn-primary m-r-1em'>Edit</a>";
-                        echo "<a href='#' onclick='delete_user({$id});'  class='btn btn-danger'>Delete</a>";
-                    }
-                echo "</td>";
-                if($done !=0){
-                    echo "<td class='green'>&#10004;</td>";
-                }else{
-                    echo "<td class='red'>&#10008;</td>";
-                }
-            echo "</tr>";
-        }
-        echo "</tbody>";
-        echo "</table>";
-        echo "</div>";
-        $query = "SELECT COUNT(*) as total_rows FROM tasks";
-        $stmt = $con->prepare($query);
-        $stmt->execute();
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        $total_rows = $row['total_rows'];
-    }
-    else{
-        echo "<div class='alert alert-danger'>No tasks found.</div>";
-    }
-
-    $page_url="index.php?";
-    include_once "paging.php";
-?>
+    ?>
+    
+    <p class='create-task'>
+        <a href='create.php' class='btn btn-primary m-b-1em'>
+            Create New Task
+        </a>
+    </p>
+    
+     
+    <?php if($num>0): ?>
+        <table id='table' class='table table-hover table-responsive table-bordered'>
+        <thead class='head-table'>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Description</th>
+                <th>Image</th>
+                <th>Action</th>
+                <th>Done</th>
+            </tr>
+        </thead>
+        <tbody class='searchable'>
+        <?php while ($row = $stmt->fetch(PDO::FETCH_ASSOC)): ?>
+            <?php extract($row); ?>
+            <tr>
+                <td><?php echo $id ?></td>
+                <td><?php echo $name ?></td>
+                <td><?php echo $email ?></td>
+                <td><?php echo $description ?></td>
+                <td>
+                    <img class='img-responsive' src='<?php echo $image ?>' alt='image'>
+                </td>
+                <td>
+                    <?php if(isset($_SESSION['admin']) && $_SESSION['admin']=="admin"):?>
+                        <a href='page-task.php?id=<?php echo $id ?>'  class='btn btn-info m-r-1em'>Read</a>
+                        <a href='update.php?id=<?php echo $id ?>' class='btn btn-primary m-r-1em'>Edit</a>
+                        <a href='#' onclick='delete_user(<?php echo $id ?>)' class='btn btn-danger'>Delete</a>
+                    <?php else: ?>
+                        <a href='page-task.php?id=<?php echo $id ?>'  class='btn btn-info m-r-1em'>Read</a> 
+                    <?php endif ?>
+                </td>
+                <?php if($done !=0): ?>
+                    <td class='green'>&#10004;</td>
+                <?php else: ?>
+                    <td class='red'>&#10008;</td>
+                <?php endif ?>
+            </tr>
+        <?php endwhile ?>
+        </tbody>
+        </table>
+    <?php else: ?>
+        <div class='alert alert-danger'>No tasks found.</div>
+    <?php endif ?>
+    <?php $page_url="index.php?"; ?>
          
 <?php include_once "footer.php"; ?>
